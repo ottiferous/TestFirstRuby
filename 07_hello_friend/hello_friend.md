@@ -32,4 +32,21 @@ after that we need to allow greeting to take an argument, in this case someone's
 	   end
 	
 	end
-But wait… that broke the first test! The method needs to take an optional argument.
+But wait… that broke the first test! The method needs to take an optional argument. What we need to do is create a new method `initialize` that will be called when we _instantiate_ the `Friend` class
+
+Once that is done we can determine if the function needs to say "Hello!" or "Hello, Bob" by assigning a default value to the optional argument `name` and checking to see if we overwrite it with any value. In this way anything that is not `nil` will cause it to execute.
+
+	class Friend
+	   def initialize
+	      puts "Hello!"
+	   end
+	
+	   def greeting name = nil
+	      if name.nil?
+	         "Hello!"
+	      else
+	         "Hello, #{name}!"
+	      end
+	   end
+	
+	end
