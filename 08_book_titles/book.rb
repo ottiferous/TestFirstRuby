@@ -2,7 +2,6 @@ class Book
    attr_reader :title
 
    def title=(string) 
-#      @title = string.split.map(&:capitalize).join(' ')
       result = string.split
       result = [result[0].capitalize] +
          result[1..-1].map do |word|
