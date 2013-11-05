@@ -38,9 +38,13 @@ class Temperature
 end
 
 class Celsius < Temperature
-   
+   def initialize deg_c
+      super(:c => deg_c)
+   end
 end
 
 class Fahrenheit < Temperature
-   
+   def initialize deg_f
+      super(:f => deg_f)
+   end
 end
