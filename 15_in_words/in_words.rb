@@ -1,7 +1,28 @@
 class Fixnum
    
    def in_words
-      case self
+      # begin by reducing the number down into 'word units' and then we can identify
+      # each unit by comparing the values to hard-coded values
+      number = self
+      trillions = number / 1_000_000_000_000
+      number -= (trillions * 1_000_000_000_000)
+      
+      billions = number / 1_000_000_000
+      number -= (billions * 1_000_000_000)
+      
+      millions = number / 1_000_000
+      number -= (millions * 1_000_000)
+      
+      thousands = number / 1_000
+      number -= (thousands * 1_000)
+      
+      hundreds = number / 100
+      number -= (hundreds * 100)
+      
+      tens = number / 10
+      number -= (tens * 10)
+      
+      case number
       when 0
          'zero'
       when 1
@@ -58,6 +79,8 @@ class Fixnum
          'eighty'
       when 90
          'ninety'
+      when 100
+         'one hundred'
       end
    end
    
