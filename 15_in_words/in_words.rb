@@ -52,35 +52,38 @@ class Fixnum
                
       }
       
-      ones.default =''
-      teens.default =''
-      tens.default =''
-      big_nums.default =''
+      ones.default = ''
+      teens.default = ''
+      tens.default = ''
+      big_nums.default = ''
 
       number = self.to_s.split('').map { |x| x.to_i }
       
       string = []
       position = 0
+      pop_num = 2
       while ! number.empty?
+
+         a, b = number.pop(pop_num)
          
-         if number[-2] == 1
-            string.unshift teens[number.pop(2)]
-            position += 2
-         elsif number.size > 1
-            y = ones[number.pop]
-            x = tens[number.pop]
-            string.unshift(x, y)
-            position += 2
-         else
-            string.unshift(ones[number.pop])
+         string.unshift()
+         if a == 1 && b != nil
+            string.unshift teens[[a,b]]
+            position += pop_num
+         elsif b == nil
+            string.unshift ones[a]
             position += 1
+         else
+            string.unshift(tens[a], ones[b])
+            position += pop_num
          end
          
+         pop_num == 1 ? pop_num = 2 : pop_num = 1
          string.insert(1, big_nums[position])
-         
+
       end
       
-      string.delete_if { |entry| entry =='' }
+      string.delete_if { |entry| entry == '' }
       string.join(' ').rstrip
       
    end
