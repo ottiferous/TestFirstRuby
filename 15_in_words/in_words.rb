@@ -1,85 +1,88 @@
 class Fixnum
    
    def in_words
-   
+
+      return'zero' if self == 0    # special case, and breaks the pattern otherwise.
+      
       ones = {
-               0 => '',
-               1 => 'one ',
-               2 => 'two ',
-               3 => 'three ',
-               4 => 'four ',
-               5 => 'five ',
-               6 => 'six ',
-               7 => 'seven ',
-               8 => 'eight ',
-               9 => 'nine '
+               0 =>'',
+               1 =>'one',
+               2 =>'two',
+               3 =>'three',
+               4 =>'four',
+               5 =>'five',
+               6 =>'six',
+               7 =>'seven',
+               8 =>'eight',
+               9 =>'nine'
       }
       
       teens = {
-               [1,0] => 'ten ',
-               [1,1] => 'eleven ',
-               [1,2] => 'twelve ',
-               [1,3] => 'thirteen ',
-               [1,4] => 'fourteen ',
-               [1,5] => 'fifteen ',
-               [1,6] => 'sixteen ',
-               [1,7] => 'seventeen ',
-               [1,8] => 'eighteen ',
-               [1,9] => 'nineteen '
+               [1,0] =>'ten',
+               [1,1] =>'eleven',
+               [1,2] =>'twelve',
+               [1,3] =>'thirteen',
+               [1,4] =>'fourteen',
+               [1,5] =>'fifteen',
+               [1,6] =>'sixteen',
+               [1,7] =>'seventeen',
+               [1,8] =>'eighteen',
+               [1,9] =>'nineteen'
       }
       
       tens = {
-               0 => '',
-               1 => '',
-               2 => 'twenty ',
-               3 => 'thirty ',
-               4 => 'fourty ',
-               5 => 'fifty ',
-               6 => 'sixty ',
-               7 => 'seventy ',
-               8 => 'eighty ',
-               9 => 'ninety '
+               0 =>'',
+               1 =>'',
+               2 =>'twenty',
+               3 =>'thirty',
+               4 =>'forty',
+               5 =>'fifty',
+               6 =>'sixty',
+               7 =>'seventy',
+               8 =>'eighty',
+               9 =>'ninety'
       }
       
       big_nums = {
-               3 => 'thousand ',
-               6 => 'million ',
-               9 => 'billion ',
-               12 => 'trillion '
+               3 =>'hundred',
+               4 =>'thousand',
+               6 =>'million',
+               9 =>'billion',
+               12 =>'trillion'
                
       }
       
-      ones.default = ''
-      teens.default = ''
-      tens.default = ''
-      big_nums.default = ''
-      
-      return 'zero' if self == 0    # special case, and breaks the pattern otherwise.
+      ones.default =''
+      teens.default =''
+      tens.default =''
+      big_nums.default =''
 
       number = self.to_s.split('').map { |x| x.to_i }
       
-      string = ''
+      string = []
       position = 0
       while ! number.empty?
          
-         string = ones[number.pop] + string
-         position += 1
-         
          if number[-2] == 1
-            string = teens[number.pop(2)] + string
+            string.unshift teens[number.pop(2)]
             position += 2
-         elsif number[-2] != nil
-            string = tens[number.pop] + ones[number.pop] + string
+         elsif number.size > 1
+            y = ones[number.pop]
+            x = tens[number.pop]
+            string.unshift(x, y)
             position += 2
+         else
+            string.unshift(ones[number.pop])
+            position += 1
          end
          
-         string = big_nums[position] + string
+         string.insert(1, big_nums[position])
          
       end
       
-      string
-      string.chomp(" ")
-
+      string.delete_if { |entry| entry =='' }
+      string.join(' ').rstrip
+      
    end
    
 end
