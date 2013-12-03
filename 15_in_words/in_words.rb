@@ -1,7 +1,8 @@
 class Fixnum
    
-   def initialize
-      @ones = {
+   def in_words
+   
+      ones = {
                0 => '',
                1 => 'one ',
                2 => 'two ',
@@ -14,7 +15,7 @@ class Fixnum
                9 => 'nine '
       }
       
-      @teens = {
+      teens = {
                [1,0] => 'ten ',
                [1,1] => 'eleven ',
                [1,2] => 'twelve ',
@@ -27,7 +28,7 @@ class Fixnum
                [1,9] => 'nineteen '
       }
       
-      @tens = {
+      tens = {
                0 => '',
                1 => '',
                2 => 'twenty ',
@@ -40,7 +41,7 @@ class Fixnum
                9 => 'ninety '
       }
       
-      @big_nums = {
+      big_nums = {
                3 => 'thousand ',
                6 => 'million ',
                9 => 'billion ',
@@ -48,35 +49,31 @@ class Fixnum
                
       }
       
-      @ones.default = ''
-      @teens.default = ''
-      @tens.default = ''
-      @big_nums.default = ''
-   end
-   
-   def in_words
-      # odd_words are the ones that need to be evaluated as 'sixty', 'seventy' etc.
+      ones.default = ''
+      teens.default = ''
+      tens.default = ''
+      big_nums.default = ''
       
       return 'zero' if self == 0    # special case, and breaks the pattern otherwise.
 
-      number = self.to_s.split('').reverse.map { |x| x.to_i }
+      number = self.to_s.split('').map { |x| x.to_i }
       
       string = ''
       position = 0
       while ! number.empty?
          
-         string = @ones[number.pop] + string
+         string = ones[number.pop] + string
          position += 1
          
          if number[-2] == 1
-            string = @teens[number.pop(2)] + string
-         else
-            string = @tens[number.pop] + @ones[number.pop] + string
+            string = teens[number.pop(2)] + string
+            position += 2
+         elsif number[-2] != nil
+            string = tens[number.pop] + ones[number.pop] + string
+            position += 2
          end
-
-         position += 2
          
-         string = @big_nums + string if @big_nums[position] != nil
+         string = big_nums[position] + string
          
       end
       
