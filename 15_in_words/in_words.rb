@@ -1,94 +1,57 @@
 class Fixnum
    
-   def single num
-
-        case num
-        when 1
-           'one '
-        when 2
-           'two '
-        when 3
-           'three '
-        when 4
-           'four '
-        when 5
-           'five '
-        when 6
-           'six '
-        when 7
-           'seven '
-        when 8
-           'eight '
-        when 9
-           'nine '
-        end
-   end
-   
-   def ugly_switch num
-         
-      case num
-      when 1
-         'one '
-      when 2
-         'two '
-      when 3
-         'three '
-      when 4
-         'four '
-      when 5
-         'five '
-      when 6
-         'six '
-      when 7
-         'seven '
-      when 8
-         'eight '
-      when 9
-         'nine '
-      end
-
-      case num
-      when 10
-         'ten '
-      when 11
-         'eleven '
-      when 12
-         'twelve '
-      when 13
-         'thirteen '
-      when 14
-         'fourteen '
-      when 15
-         'fifteen '
-      when 16
-         'sixteen '
-      when 17
-         'seventeen '
-      when 18
-         'eighteen '
-      when 19
-         'nineteen '
-      when 20
-         'twenty '
-      when 30
-         'thirty '
-      when 40
-         'forty '
-      when 50
-         'fifty '
-      when 60
-         'sixty '
-      when 70
-         'seventy '
-      when 80
-         'eighty '
-      when 90
-         'ninety '
-      when 100
-         'one hundred '
-      else
-         ''
-      end
+   def initialize
+      @ones = {
+               0 => '',
+               1 => 'one ',
+               2 => 'two ',
+               3 => 'three ',
+               4 => 'four ',
+               5 => 'five ',
+               6 => 'six ',
+               7 => 'seven ',
+               8 => 'eight ',
+               9 => 'nine '
+      }
+      
+      @teens = {
+               [1,0] => 'ten ',
+               [1,1] => 'eleven ',
+               [1,2] => 'twelve ',
+               [1,3] => 'thirteen ',
+               [1,4] => 'fourteen ',
+               [1,5] => 'fifteen ',
+               [1,6] => 'sixteen ',
+               [1,7] => 'seventeen ',
+               [1,8] => 'eighteen ',
+               [1,9] => 'nineteen '
+      }
+      
+      @tens = {
+               0 => '',
+               1 => '',
+               2 => 'twenty ',
+               3 => 'thirty ',
+               4 => 'fourty ',
+               5 => 'fifty ',
+               6 => 'sixty ',
+               7 => 'seventy ',
+               8 => 'eighty ',
+               9 => 'ninety '
+      }
+      
+      @big_nums = {
+               3 => 'thousand ',
+               6 => 'million ',
+               9 => 'billion ',
+               12 => 'trillion '
+               
+      }
+      
+      @ones.default = ''
+      @teens.default = ''
+      @tens.default = ''
+      @big_nums.default = ''
    end
    
    def in_words
@@ -97,44 +60,27 @@ class Fixnum
       return 'zero' if self == 0    # special case, and breaks the pattern otherwise.
 
       number = self.to_s.split('').reverse.map { |x| x.to_i }
-      odd_words = (1..(number.size-1)).step(3).select {|x| x}
-      
-      position = 1
-      number.each do |x|
-         
-         
-         
-      
-      
-      number = self
-      trillions = number / 1_000_000_000_000
-      number -= (trillions * 1_000_000_000_000)
-      
-      billions = number / 1_000_000_000
-      number -= (billions * 1_000_000_000)
-      
-      millions = number / 1_000_000
-      number -= (millions * 1_000_000)
-      
-      thousands = number / 1_000
-      number -= (thousands * 1_000)
-      
-      hundreds = number / 100
-      number -= (hundreds * 100)
-      
-      tens = number / 10
-      number -= (tens * 10)
       
       string = ''
+      position = 0
+      while ! number.empty?
+         
+         string = @ones[number.pop] + string
+         position += 1
+         
+         if number[-2] == 1
+            string = @teens[number.pop(2)] + string
+         else
+            string = @tens[number.pop] + @ones[number.pop] + string
+         end
+
+         position += 2
+         
+         string = @big_nums + string if @big_nums[position] != nil
+         
+      end
       
-      string += ugly_switch trillions
-      string += ugly_switch billions
-      string += ugly_switch millions
-      string += ugly_switch thousands
-      string += ugly_switch hundreds
-      string += ugly_switch tens
-      string += ugly_switch number
-      
+      string
       string.chomp(" ")
 
    end
