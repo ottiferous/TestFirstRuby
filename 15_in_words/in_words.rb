@@ -18,16 +18,16 @@ class Fixnum
       }
       
       teens = {
-               [1,0] =>'ten',
-               [1,1] =>'eleven',
-               [1,2] =>'twelve',
-               [1,3] =>'thirteen',
-               [1,4] =>'fourteen',
-               [1,5] =>'fifteen',
-               [1,6] =>'sixteen',
-               [1,7] =>'seventeen',
-               [1,8] =>'eighteen',
-               [1,9] =>'nineteen'
+               0 =>'ten',
+               1 =>'eleven',
+               2 =>'twelve',
+               3 =>'thirteen',
+               4 =>'fourteen',
+               5 =>'fifteen',
+               6 =>'sixteen',
+               7 =>'seventeen',
+               8 =>'eighteen',
+               9 =>'nineteen'
       }
       
       tens = {
@@ -43,51 +43,70 @@ class Fixnum
                9 =>'ninety'
       }
       
-      big_nums = {
-               3 =>'hundred',
-               4 =>'thousand',
-               6 =>'million',
-               9 =>'billion',
-               12 =>'trillion'
+      hundreds = {
+#               0 => '',
+               1 =>'thousand',
+               2 =>'million',
+               3 =>'billion',
+               4 =>'trillion'
                
       }
       
       ones.default = ''
       teens.default = ''
       tens.default = ''
-      big_nums.default = ''
+      hundreds.default = ''
 
       number = self.to_s.split('').map { |x| x.to_i }
       
-      string = []
-      position = 0
-      pop_num = 2
+      word = []
+      powers = 0
       while ! number.empty?
 
-         a, b = number.pop(pop_num)
+         set = number.pop 3
+         string = []
          
-         string.unshift()
-         if a == 1 && b != nil
-            string.unshift teens[[a,b]]
-            position += pop_num
-         elsif b == nil
-            string.unshift ones[a]
-            position += 1
-         else
-            string.unshift(tens[a], ones[b])
-            position += pop_num
+         if set.size == 3
+            string << ones[set[0]] << ( ones[set[0]] != '' ? 'hundred' : '' )
+            if set[1] == 1
+               string << teens[set[2]]
+            else
+               string << [tens[set[1]], ones[set[2]]]
+            end         
+         elsif set.size == 2
+            if set[0] == 1
+               string << teens[set[1]]
+            else
+               string << [tens[set[0]], ones[set[1]]]
+            end            
+         elsif set.size == 1
+            string.unshift ones[set[0]]
          end
          
-         pop_num == 1 ? pop_num = 2 : pop_num = 1
+         string.flatten!
+         string.compact!
 
-         # don't add a big_num word if the last entry was blank.
-         string.insert(1, big_nums[position]) if string[0] != ''
+         powers += 1
 
+         # special case for single word events
+         
+         if (number.empty? == false && self % 10 == 0)
+            string.insert(0,hundreds[powers]) 
+         elsif ! number.empty?
+            string.unshift(hundreds[powers])
+         end
+
+         word.unshift string
+         
       end
       
-      string.delete_if { |entry| entry == '' }
-
-      string.join(' ').rstrip
+        
+         
+      word = word.flatten.delete_if { |entry| entry == ''  }
+      
+      word.delete('thousand') if self % 1_000_000 == 0
+      word
+      word.join(' ').rstrip
       
    end
    
