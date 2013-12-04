@@ -79,11 +79,14 @@ class Fixnum
          end
          
          pop_num == 1 ? pop_num = 2 : pop_num = 1
-         string.insert(1, big_nums[position])
+
+         # don't add a big_num word if the last entry was blank.
+         string.insert(1, big_nums[position]) if string[0] != ''
 
       end
       
       string.delete_if { |entry| entry == '' }
+
       string.join(' ').rstrip
       
    end
