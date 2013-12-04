@@ -44,7 +44,6 @@ class Fixnum
       }
       
       hundreds = {
-#               0 => '',
                1 =>'thousand',
                2 =>'million',
                3 =>'billion',
@@ -86,27 +85,32 @@ class Fixnum
          string.flatten!
          string.compact!
 
-         powers += 1
+         powers += 1 if number.empty? == false
 
          # special case for single word events
          
-         if (number.empty? == false && self % 10 == 0)
-            string.insert(0,hundreds[powers]) 
-         elsif ! number.empty?
-            string.unshift(hundreds[powers])
-         end
+#         if (number.empty? == false && self % 10 == 0)
+#            string.insert(0,hundreds[powers]) 
+#         elsif ! number.empty?
+#            string.unshift(hundreds[powers])
+#         end
 
          word.unshift string
          
       end
       
-        
-         
-      word = word.flatten.delete_if { |entry| entry == ''  }
-      
-      word.delete('thousand') if self % 1_000_000 == 0
-      word
-      word.join(' ').rstrip
+      result = []
+      word.reverse!
+      while ! word.empty?
+         result << word.pop
+         result << ( result.last.uniq != [""] ? hundreds[word.size] : '' )
+      end
+            
+      #word = word.flatten.delete_if { |entry| entry == ''  }      
+      #word.delete('thousand') if self % 1_000_000 == 0
+      result = result.flatten.delete_if { |entry| entry == ''  }
+      result
+      result.join(' ')
       
    end
    
