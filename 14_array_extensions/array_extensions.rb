@@ -1,19 +1,11 @@
 class Array
    
    def sum
-      if self.empty?
-         return 0
-      else
-         self.reduce(:+)
-      end
+      self.empty? ? 0 : self.reduce(:+)
    end
    
    def square
-      if self.empty?
-         return []
-      else
-         self.map { |x| x**2 }
-      end
+      self.empty? ? [] : self.map { |x| x**2 }
    end
    
    def square!
