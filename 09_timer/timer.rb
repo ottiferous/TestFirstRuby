@@ -6,39 +6,22 @@ class Timer
    end
    
    def seconds=(time=0)
-      if time >= 0
-         @seconds = time
-      else
-         @seconds = 0
-      end
+      time >= 0 ? @seconds = time : @seconds = 0
    end
    
    def padded num
-      if num < 10
-         return "0" + num.to_s
-      end
-      return num.to_s
+      num < 10 ? "0#{num.to_s}" : num.to_s
    end
    
    def time_string
-      time = @seconds   # don't want to overwrite the original
-      hour, minute, second = 0, 0, 0
+      #not best practice to change @seconds to display time (may be needed later) - but oh well
+      hour = @seconds / 3600
+      @seconds -= (hour*3600)
 
-      # if the dividend is smaller than the divisor it gives a 0 
-      # which in our next step will make the math time -= (0*3600)
-      # or time -= 0 so we don't have to worry about if statements
-      hour = time / 3600
-      time -= (hour*3600)
+      min = @seconds / 60
+      @seconds -= (min*60)
 
-      min = time / 60
-      time -= (min*60)
-
-      second = time
-      
-      # We have our time stored into hour, minute, seconds
-      
-      return ( padded(hour) + ":" + padded(min) + ":" + padded(second) )
-      
+      padded(hour) + ":" + padded(min) + ":" + padded(@seconds)
    end
    
 end
