@@ -2,7 +2,6 @@ class Dictionary
 
    def initialize
       @entries = Hash.new
-      @entries.default = nil
    end
 
    def entries
@@ -10,8 +9,7 @@ class Dictionary
    end
 
    def add new_entry
-      @entries.merge!(new_entry) if new_entry.class == Hash
-      @entries[new_entry] = nil if new_entry.class == String
+      new_entry.class == Hash ? @entries.merge!(new_entry) : @entries[new_entry] = nil
    end
 
    def keywords
@@ -28,7 +26,7 @@ class Dictionary
 
    def printable
       string = ""
-      @entries.sort.each { |key, value| string += "[#{key}] \"#{value}\"\n"}
+      @entries.sort.each { |key, value| string << "[#{key}] \"#{value}\"\n"}
       string.chomp
    end
 end
