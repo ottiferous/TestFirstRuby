@@ -3,15 +3,8 @@ class Book
 
    def title=(string) 
       result = string.split
-      result = [result[0].capitalize] +
-         result[1..-1].map do |word|
-            if %w{the a an and in of}.include? word
-               word
-            else
-               word.capitalize
-            end
-         end
-      @title = result.join(' ')
+      @title = ([result[0].capitalize] + 
+         result[1..-1].map { |word| (%w{the a an and in of}.include? word) ? word : word.capitalize }).join(' ')
    end
 
 end
