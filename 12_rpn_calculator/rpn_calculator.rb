@@ -2,7 +2,6 @@ class RPNCalculator
    
    def initialize
       @num_stack = []
-      @total = 0
    end
    
    def push num
