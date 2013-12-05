@@ -9,9 +9,9 @@ class Fixnum
       tens = { 2 =>'twenty', 3 =>'thirty', 4 =>'forty', 5 =>'fifty', 6 =>'sixty', 7 =>'seventy', 8 =>'eighty', 9 =>'ninety' }
       hundreds = { 1 =>'thousand', 2 =>'million', 3 =>'billion', 4 =>'trillion' }
 
-      ones.default = '' 
+      ones.default = ''
       teens.default = '' 
-      tens.default = '' 
+      tens.default = ''
       hundreds.default = ''
 
       number = self.to_s.split('').map { |x| x.to_i }
@@ -19,22 +19,18 @@ class Fixnum
       word = []
       powers = 0
       while ! number.empty?
-
          set = number.pop 3
          string = []
-         
-         if set.size == 3
+         case set.size
+         when 3
             string << ones[set[0]] << ( ones[set[0]] != '' ? 'hundred' : '' )
-            set[1] == 1 ? string << teens[set[2]] : string << [tens[set[1]], ones[set[2]]]
-         elsif set.size == 2
-            set[0] == 1 ? string << teens[set[1]] :string << [tens[set[0]], ones[set[1]]]
-         elsif set.size == 1
+            string << ( set[1] == 1 ? teens[set[2]] : [tens[set[1]], ones[set[2]]] )
+         when 2
+            string << ( set[0] == 1 ? teens[set[1]] : [tens[set[0]], ones[set[1]]] )
+         when 1
             string.unshift ones[set[0]]
          end
-         
-         string.flatten!
-         word.unshift string
-         
+         word.unshift string.flatten
       end
       
       # inserts the 'special' words like hundreds, thousands, etc.
