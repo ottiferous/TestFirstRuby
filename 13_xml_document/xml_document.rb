@@ -8,24 +8,21 @@ class XmlDocument
    def method_missing name, *args, &block
       attr = args[0] || {}
       xml = ""
-      xml += "  "*@indent_lvl if @indent
-      xml += "<#{name}"
+      xml << "  "*@indent_lvl if @indent
+      xml << "<#{name}"
       attr.each_pair do |key, value|
-         xml += " #{key}='#{value}'"
+         xml << " #{key}='#{value}'"
       end
       
       if block
-         xml += ">"
-         xml += "\n" if @indent
+         xml << ( @indent ? ">\n" : ">" )
          @indent_lvl += 1
-         xml += yield
+         xml << yield
          @indent_lvl -= 1
-         xml += "  "*@indent_lvl if @indent
-         xml += "</#{name}>"
-         xml += "\n" if @indent
+         xml << "  "*@indent_lvl if @indent
+         xml << ( @indent ? "</#{name}>\n" : "</#{name}>" )
       else
-         xml += "/>"
-         xml += "\n" if @indent
+         xml << ( @indent ? "/>\n" : "/>" )
       end
       xml
    end
