@@ -1,31 +1,25 @@
-def add(x, y)
+def add x, y
 	x + y
 end
-def subtract(x, y)
+
+def subtract x, y
 	x - y
 end
-def sum(myarray)
-	total = 0
-	if myarray
-		for num in myarray
-			total += num
-		end
-	end
-	total
+
+def sum array
+   array << 0
+   array.inject(:+)
 end
 
-def multiply(x, y)
+def multiply x, y
 	x * y
 end
 
-def power(x, y)
+def power x, y
 	x ** y
 end
 
-def factorial(x)
-	while x > 0 do
-		x += (x-1)
-	end
-	x
+def factorial x
+   (1..x).reduce(1, :*)
 end
 	
