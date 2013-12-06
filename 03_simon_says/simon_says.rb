@@ -1,30 +1,28 @@
-def echo(word)
+def echo word
    word
 end
 
-def shout(word)
+def shout word
    word.upcase!
 end
 
-def repeat(word, x=2)
+def repeat word, x=2
    sentence = ""
-   x.times do
-      sentence += word + " "
-   end
+   x.times { sentence << word + " " }
    sentence.rstrip
 end
 
-def start_of_word(word, x)
+def start_of_word word, x
    word[0..(x-1)]
 end
 
-def first_word(sentence)
-   sentence.split()[0]
+def first_word sentence
+   sentence.split.first
 end
 
-def titleize(sentence)
+def titleize sentence
    response = ""
-   exclude = ["and", "the", "over", "is", "a"]
+   exclude = %w[and the over is a]
    for each in sentence.split() do
       if exclude.include? each
          response += each + " "
