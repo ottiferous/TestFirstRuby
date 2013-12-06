@@ -7,9 +7,7 @@ def shout word
 end
 
 def repeat word, x=2
-   sentence = ""
-   x.times { sentence << word + " " }
-   sentence.rstrip
+   ((word + " ") * x).rstrip
 end
 
 def start_of_word word, x
@@ -20,18 +18,9 @@ def first_word sentence
    sentence.split.first
 end
 
-def titleize sentence
-   response = ""
-   exclude = %w[and the over is a]
-   for each in sentence.split() do
-      if exclude.include? each
-         response += each + " "
-      else
-         response += each.capitalize + " "
-      end
-   end
-   response.rstrip!
-   response[0..0] = response[0..0].upcase
-   response
+def titleize title
+   title = (title.split.map! { |word| (%w[and the over is a].include? word) ? word : word.capitalize! }).join(' ')
+   title[0] = title[0].capitalize
+   title
 end
 
