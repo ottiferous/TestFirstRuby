@@ -1,6 +1,7 @@
 require 'csv'
 require 'sunlight/congress'
 require 'erb'
+require 'Date'
 
 Sunlight::Congress.api_key = 'e179a6973728c4dd3fb1204283aaccb5'
 
@@ -8,10 +9,27 @@ def clean_zipcode zipcode
    zipcode.to_s.rjust(5, "0")[0..4]
 end
 
-# http://tutorials.jumpstartlab.com/projects/eventmanager.html#iteration:-clean-phone-numbers
 def clean_phone number
-   number.length < 10 ? return "0"*10
-   number.to_s
+   clean = "0"*10 
+   
+   case number.length
+   when 10
+      clean = number
+   when 11
+      number[0] == '1' ? clean = number : "0"*10
+   else
+      clean = "0"*10
+   end
+   
+   clean
+   
+end
+
+def time_target date
+   
+   d = Date.strptime(date, "%m/%d/%y %H:%M")
+   [date.strftime("%H"), d.strftime("%A")]
+   
 end
 
 def legislators_by_zipcode zipcode
@@ -33,14 +51,21 @@ contents = CSV.open "event_attendees.csv", headers: true, header_converters: :sy
 template_letter = File.read 'form_letter.erb'
 erb_template = ERB.new template_letter
 
+regdate = {}
+
 contents.each do |row|
    id = row[0]
    name = row[:first_name]
-
    zipcode = clean_zipcode row[:zipcode]   
-
+   phone = clean_phone row[:homephone]
+   time = time_target row[:homephone]
    legislators = legislators_by_zipcode zipcode
+   
+   regdate.map { regdate.haskey? time[0] ? regdate[time[0]].key += 1 : regdate[time[0]] = 1 }
    
    form_letter = erb_template.result binding
 
 end
+
+
+puts regdate
