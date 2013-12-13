@@ -1,6 +1,10 @@
-.idea
-.html
+*.idea
+*.html
 *.swp
 event_manager/output/*
 *.csv
 *.erb
+*_spec.rb
+asets/*
+Rakefile
+spec/*
