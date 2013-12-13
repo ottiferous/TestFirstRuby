@@ -20,8 +20,6 @@ def clean_phone number
       clean = number
    when 11
       number[0] == '1' ? clean = number : "0"*10
-   else
-      clean = "0"*10
    end
    
    clean
